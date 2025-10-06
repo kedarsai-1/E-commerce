@@ -45,4 +45,41 @@ shopRouter.get('/shops/view',async(req,res)=>{
 
 
 })
+shopRouter.get('/sellershops/view',userAuth,async(req,res)=>{
+    try{
+        const userId = req.user._id;
+        const shops = await Shop.find({owner:userId})
+        res.json(shops)
+    }
+    catch(err){
+        res.status(500).json({ error: err.message });
+
+    }
+})
+const mongoose = require("mongoose");
+
+shopRouter.patch('/sellershops/patch/:shopId', userAuth, async (req, res) => {
+    try {
+
+        const { shopId } = req.params;
+        const userId = req.user._id;
+        const updates = req.body;
+
+        const shop = await Shop.findOneAndUpdate(
+            { _id: shopId, owner: userId },
+            { $set: updates },
+            { new: true, runValidators: true }
+        );
+
+        if (!shop) {
+            console.log(" Shop not found");
+            return res.status(404).json({ error: "Shop not found or not owned by you" });
+        }
+        return res.json(shop); 
+    } catch (err) {
+        console.error(" Error updating shop:", err.message);
+        return res.status(500).json({ error: err.message });
+    }
+});
+
 module.exports = {shopRouter};
