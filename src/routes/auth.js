@@ -7,6 +7,18 @@ const validator = require("validator")
 const {userAuth} = require('../middleware/auth')
 const {validateSignupdata}= require('../validate/validation')
 
+// Shared cookie options for auth token
+const isProduction = process.env.NODE_ENV === 'production';
+const cookieOptions = {
+    httpOnly: true,
+    path: '/',
+};
+
+if (isProduction) {
+    cookieOptions.sameSite = 'none';
+    cookieOptions.secure = true;
+}
+
 
 authRouter.post('/signup',async(req,res)=>{
     try{
@@ -15,7 +27,7 @@ authRouter.post('/signup',async(req,res)=>{
         const {FirstName,LastName,emailId,Password,isShopOwner}=req.body;
         const PasswordHash = await bcrypt.hash(Password,10);
 
-        const user =new User({
+       const user =new User({
             FirstName,
             LastName,
             emailId,
@@ -25,7 +37,7 @@ authRouter.post('/signup',async(req,res)=>{
         })
        const savedUser= await user.save();
        const token = jwt.sign({_id:user._id},"DEV@Tinder$790",{expiresIn:"1d"})
-       res.cookie('token',token,{httpOnly:true})
+       res.cookie('token',token,cookieOptions)
        res.send(savedUser);
 
     }
@@ -50,12 +62,7 @@ authRouter.post('/login', async (req, res) => {
       const isPasswordValid = await bcrypt.compare(Password, user.Password);
       if (isPasswordValid) {
         const token = jwt.sign({ _id: user._id }, "DEV@Tinder$790", { expiresIn: "1d" });
-  
-    
-        res.cookie("token", token, {
-          httpOnly: true, 
-          path: "/"
-        });
+        res.cookie("token", token, cookieOptions);
   
         res.send(user);
       } else {
@@ -68,12 +75,7 @@ authRouter.post('/login', async (req, res) => {
   
   authRouter.post('/logout', (req, res) => {
    
-    res.clearCookie("token", {
-      httpOnly: true,
-     
-      
-    
-    });
+    res.clearCookie("token", cookieOptions);
   
     res.send("Successfully logged out");
   });

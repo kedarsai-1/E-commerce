@@ -9,12 +9,29 @@ const cors = require('cors');
 const { shopRouter } = require('./routes/shop');
 const  itemRouter  = require('./routes/item');
 
+// Trust proxy so secure cookies work correctly behind Render/other proxies
+app.set('trust proxy', 1);
+
+// Allow multiple frontend origins to access this API
+const allowedOrigins = [
+    "https://ecommerece-2aarq41m6-kedarsais-projects.vercel.app",
+    "https://ecommerece-1f6b285c4-kedarsais-projects.vercel.app",
+];
+
+const corsOptions = {
+    origin: function (origin, callback) {
+        // Allow non-browser clients (no origin) and whitelisted origins
+        if (!origin || allowedOrigins.includes(origin)) {
+            return callback(null, true);
+        }
+        return callback(new Error('Not allowed by CORS'));
+    },
+    credentials: true,
+};
+
 app.use(express.json()); 
 app.use(cookieParser())
-app.use(cors({
-    origin:"https://ecommerece-2aarq41m6-kedarsais-projects.vercel.app",
-    credentials:true,
-}))
+app.use(cors(corsOptions))
 // Serve static files from the public directory
 app.use('/images', express.static(path.join(__dirname, '../public/images')));
 app.use('/',authRouter)
