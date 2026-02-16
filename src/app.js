@@ -9,6 +9,7 @@ const cors = require('cors');
 const { shopRouter } = require('./routes/shop');
 const  itemRouter  = require('./routes/item');
 const { cloudinaryRouter } = require('./routes/cloudinary');
+const { stripeRouter } = require('./routes/stripe');
 
 // Trust proxy so secure cookies work correctly behind Render/other proxies
 app.set('trust proxy', 1);
@@ -17,7 +18,10 @@ app.set('trust proxy', 1);
 const allowedOrigins = [
     "https://ecommerece-2aarq41m6-kedarsais-projects.vercel.app",
     "https://ecommerece-1f6b285c4-kedarsais-projects.vercel.app",
-    "https://ecommerece-p1rw644l2-kedarsais-projects.vercel.app"
+    "https://ecommerece-p1rw644l2-kedarsais-projects.vercel.app",
+   "https://ecommerece-eiufmrs53-kedarsais-projects.vercel.app",
+   "https://ecommerece-web-pied.vercel.app"
+
 ];
 
 const corsOptions = {
@@ -41,6 +45,7 @@ app.use('/',profileRouter)
 app.use('/',shopRouter)
 app.use('/',itemRouter)
 app.use('/api/cloudinary', cloudinaryRouter)
+app.use('/stripe', stripeRouter)
 connectDB().then(()=>{
     console.log("Database connection Established...");
     app.listen(4545,()=>{
