@@ -15,16 +15,13 @@ function requireEnv(name) {
 }
 
 function toUnitAmount(value) {
-  // Accept either integer "cents/paise" or a float/string in major units.
-  // Examples:
-  // - 49900 -> 49900
-  // - "499.00" -> 49900
-  // - 499 -> 49900 (assume major units)
-  if (typeof value === 'number' && Number.isInteger(value) && value > 0) return value;
   const n = Number(value);
   if (!Number.isFinite(n) || n <= 0) return null;
+
+  // Always treat incoming price as INR major units
   return Math.round(n * 100);
 }
+
 
 /**
  * POST /stripe/create-checkout-session
