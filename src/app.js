@@ -11,7 +11,7 @@ const  itemRouter  = require('./routes/item');
 app.use(express.json()); 
 app.use(cookieParser())
 app.use(cors({
-    origin:"http://localhost:5173"||"https://ecommerece-2aarq41m6-kedarsais-projects.vercel.app",
+    origin:"https://ecommerece-2aarq41m6-kedarsais-projects.vercel.app",
     credentials:true,
 }))
 app.use('/',authRouter)
