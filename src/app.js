@@ -8,6 +8,7 @@ const cookieParser = require('cookie-parser');
 const cors = require('cors');
 const { shopRouter } = require('./routes/shop');
 const  itemRouter  = require('./routes/item');
+const { cloudinaryRouter } = require('./routes/cloudinary');
 
 // Trust proxy so secure cookies work correctly behind Render/other proxies
 app.set('trust proxy', 1);
@@ -38,6 +39,7 @@ app.use('/',authRouter)
 app.use('/',profileRouter)
 app.use('/',shopRouter)
 app.use('/',itemRouter)
+app.use('/api/cloudinary', cloudinaryRouter)
 connectDB().then(()=>{
     console.log("Database connection Established...");
     app.listen(4545,()=>{
