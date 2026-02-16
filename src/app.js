@@ -20,7 +20,8 @@ const allowedOrigins = [
     "https://ecommerece-1f6b285c4-kedarsais-projects.vercel.app",
     "https://ecommerece-p1rw644l2-kedarsais-projects.vercel.app",
    "https://ecommerece-eiufmrs53-kedarsais-projects.vercel.app",
-   "https://ecommerece-web-pied.vercel.app"
+   "https://ecommerece-web-pied.vercel.app",
+   
 
 ];
 
