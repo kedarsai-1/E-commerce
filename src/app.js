@@ -1,4 +1,5 @@
 const express = require('express');
+const path = require('path');
 const {connectDB} =require('./config/database')
 const app = express ()
 const {authRouter}=require('./routes/auth');
@@ -14,6 +15,8 @@ app.use(cors({
     origin:"https://ecommerece-2aarq41m6-kedarsais-projects.vercel.app",
     credentials:true,
 }))
+// Serve static files from the public directory
+app.use('/images', express.static(path.join(__dirname, '../public/images')));
 app.use('/',authRouter)
 app.use('/',profileRouter)
 app.use('/',shopRouter)
