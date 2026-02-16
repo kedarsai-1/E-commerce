@@ -17,6 +17,7 @@ app.set('trust proxy', 1);
 const allowedOrigins = [
     "https://ecommerece-2aarq41m6-kedarsais-projects.vercel.app",
     "https://ecommerece-1f6b285c4-kedarsais-projects.vercel.app",
+    "https://ecommerece-p1rw644l2-kedarsais-projects.vercel.app"
 ];
 
 const corsOptions = {
